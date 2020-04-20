@@ -117,3 +117,76 @@ In the end, all the weights are updated *simultaneously*.
 * Use a different batch of data to calculate the next update.
 * Start over from the beginning once all the data is used.
 * Each time through the training data is called an **Epoch**.
+
+# Deep Learning Models with Keras
+
+The keras workflow has 4 steps:
+1. Specify the architecture - number of layers, number of nodes in each layer, activation function
+2. Compile the model
+3. Fit the model on the training data
+4. Use the model to make predictions
+
+## Model specification
+
+After you read the data into an np array, specify the number of columns (data.shape[1]).
+This gives the number of nodes in the input layer.
+
+You can specify the type of model to be used:
+
+    model = Sequential()
+
+You can add layers to the network using the add() method.
+
+    model.add(Dense(100, activation='relu', input_shape=(n_cols, )))
+    model.add(Dense(100, activation='relu'))
+    model.add(Dense(1))
+
+Here, Dense means that every node in the previous layer is connected to every node in the next layer.
+100 is the number of nodes in the layer.
+activation specifies the activation function to be used.
+The first line specifies the input layer. The next line specifies a hidden layer.
+The last line specifies the output layer with a single node.
+
+## Compiling the model
+
+The compile method in Keras has two different arguments:
+
+1. The optimizer to be used
+* This controls the learning rate. 
+* The most commonly used optimizer is the **"Adam"**. It adjusts the weights as gradient descent is performed.
+
+2. Loss Function
+* The most commonly used function is the mean_squared_error
+
+    model.compile(optimizer='adam', loss='mean_squared_error')
+
+## Fitting the model
+
+* The fit step applies backpropagation and gradient descent with your data to update the weights.
+* Scaling the data before fitting can ease the optimization process.
+
+    model.fit(predictors, target)
+
+## Classification models
+
+For classification models,
+
+* The most commonly used loss function used is **categorical_crossentropy**. This is similar to a log loss function. A lower value indicates a better model.
+* metrics=['accuracy'] is used in the compile step for easy-to-understand diagnostics.
+* The output layer has a different node for each possible outcome and uses 'softmax' activation. This ensures that the predictions are interpreted as probabilities.
+
+## Saving and reloading models using Keras
+
+* When you build a model, you need to save the model. Models are saved in a file having format HDF - Hierarchical Data Format.
+* This model can then be reloaded for use.
+* Using the reloaded model, you can make predictions.
+
+    from keras.models import load_model
+    model.save('my_model.h5')
+    mymodel = load_model('my_model.hf)
+    pred = mymodel.predict(data)
+
+This can be useful in avoiding rebuilding a model or verifying the structure of the model before making predictions.
+
+# Fine Tuning Keras Models
+
