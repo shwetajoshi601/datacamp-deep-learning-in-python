@@ -277,6 +277,7 @@ By default, keras trains for 10 epochs. Since we have specified when to stop, we
 * Keep increasing capacity till the validation score is no longer improving.
 
 Example:
+
 ![workflow](images/capacity_optimizing_workflow.PNG)
 
 
