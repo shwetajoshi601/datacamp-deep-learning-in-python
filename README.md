@@ -190,3 +190,86 @@ This can be useful in avoiding rebuilding a model or verifying the structure of 
 
 # Fine Tuning Keras Models
 
+## Why is Optimization hard?
+
+* The optimal value for any weight depends on the values of the other weights.
+* It involves optimizing 1000s of parameters simulataneously with complex relationships.
+* Updates may not improve the model meaningfully.
+* Updates may be too small if the learning rate used is too small and they may be too large if the learning rate is too large. A smart optimizer like 'Adams' helps but these problems may still persist. 
+
+## Using different Optimizers
+
+You can tune the learning rate in the optimizer being used.
+For example, if you are using Stochastic Gradient Descent,
+
+    lr=0.01
+    my_optimizer = SGD(lr=lr)
+    model.compile(optimizer=my_optimizer, loss='categorical_crossentropy')
+
+## Problems in Optimization
+
+### Dying Neuron Problem
+
+This problem occurs when a neuron outputs a value of 0 for all the rows in the data. 
+In case of a relu activation function, this would mean, the weight coming into that node is negative.
+Hence, the slop of the weights as well as the output is 0. This means, the weights do not get updated.
+Such a neuron has nothing to add to the model and is hence called *dead*.
+
+<image>
+
+At first, we may feel that an activation function which never outputs an exact zero could be a solution.
+However, this may result in another problem called Vanishing gradients.
+
+### Vanishing Gradients
+
+Earlier, a popular activation function was used called the *tanh* function.
+<image>
+
+* This problem occurs when many layers have very small slopes due to being on the flat part of the tanh curve.
+* Small slopes may work in networks with very few layers, however, with deep networks, the slopes become close to 0. This implies that in backpropagation, the updates are close to 0.
+* Vanishing gradients make it difficult to know which direction the parameters should move to improve the cost function
+
+For the vanishing gradient problem, the first thought would be to use an activation function that does not go flat anywhere. Lot of reasearch has been to evaluate the effects of each of these problems and their solutions.
+
+## Model Validation
+
+* Validation data is the data that is held out explicitly from the training data and is used only to test the model performance. A common technique is k-fold cross validation. In practice, k-fold cross validation on deep learning is very computationally expensive.
+* Keras makes it easy to use some data as validation data by specifying a parameter in the fit() method.
+
+    model.fit(predictors, target, validation_split=0.3)
+
+The above statement specifies that 30% of the data should be used as validation data.
+
+* The idea is to have a best possible validation of the model. Hence, we keep training as long as the model is improving. We stop once the validation no longer gives better results. This can be achieved with the help of **Early Stopping**.
+
+    from keras.callbacks import EarlyStopping
+    early_stopping_monitor=EarlyStopping(patience=2)
+    model.fit(predictors, target, validation_split=0.3, nb_epoch=20, callbacks=[early_stopping_monitor])
+
+The parameter *patience* specifies how many epochs the model can go without training before we stop training any further.
+
+By default, keras trains for 10 epochs. Since we have specified when to stop, we can have a higher number of epochs which is given by nb_epoch=20.
+
+## Model Capacity
+
+* We can experiment with different models to see which one yields bettwe results.
+* This experimentation can be based on number of layers, type of model, validation, activation function, etc.
+* For this, being aware of the model capacity is important. This term is closely related to Overfitting and Underfitting.
+* Model capacity is a model's ability to capture predictive patterns in the data.
+* Capacity can be in terms of layers, number of nodes in the layers, etc.
+
+<image>
+
+### Workflow for optimizing model capacity
+
+* Start with a simple network and get the validation score.
+* Gradually add capacity.
+* Keep increasing capacity till the validation score is no longer improving.
+
+Example:
+<Image>
+
+# Links
+
+* https://towardsdatascience.com/adam-latest-trends-in-deep-learning-optimization-6be9a291375c
+* https://keras.io/optimizers/#adam
