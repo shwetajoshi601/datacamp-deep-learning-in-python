@@ -4,7 +4,7 @@
 
 ## Forward propagation
 
-![forward propagation](images/forward_prop.png)
+![forward propagation](images/forward_prop.PNG)
 
 ## Activation Functions
 
@@ -15,7 +15,7 @@
 relu(3) = 3
 relu(-3) = 0
 
-![relu](images/relu.png)
+![relu](./images/relu.PNG)
 
 Identity Function: Returns the same output as the input.
 
@@ -27,7 +27,7 @@ Identity Function: Returns the same output as the input.
 * For example, the first hidden layer may identify a line, the second may identify a diagonal, the third may identify a square, and subsequent layers may come up with more complex geometrical shapes based on the data.
 * An advantage is that the modeler need not specify these interactions.
 
-![deep network](images/deeper_networks.png)
+![deep network](images/deeper_networks.PNG)
 
 # Optimizing Neural Networks
 
@@ -55,7 +55,7 @@ Identity Function: Returns the same output as the input.
 
 * This algorithm eventually leads to the minimum value. Hence, it is used to minimise the value of the loss function.
 
-![gradient descent](images/gradient_descent.png)
+![gradient descent](images/gradient_descent.PNG)
 
 ### Learning Rate
 
@@ -117,7 +117,7 @@ In the end, all the weights are updated *simultaneously*.
 * Need to keep track of the slopes w.r.t the values of the nodes.
 * Slope of node values = sum of the slopes of the weights coming out from the node.
 
-![back propagation](images/back_propagation.png)
+![back propagation](images/back_propagation.PNG)
 
 ## Stochastic Gradient Descent
 
@@ -224,7 +224,7 @@ For example, if you are using Stochastic Gradient Descent,
 * Hence, the slop of the weights as well as the output is 0. This means, the weights do not get updated.
 * Such a neuron has nothing to add to the model and is hence called *dead*.
 
-![dying neuron](images/dying_neuron.png)
+![dying neuron](images/dying_neuron.PNG)
 
 At first, we may feel that an activation function which never outputs an exact zero could be a solution.
 However, this may result in another problem called Vanishing gradients.
