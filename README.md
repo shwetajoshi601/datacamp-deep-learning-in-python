@@ -2,6 +2,10 @@
 
 # Introduction
 
+## Forward propagation
+
+![forward propagation](images/forward_prop.png)
+
 ## Activation Functions
 
 * An activation function allows the nodes to capture non-linearities and capture patterns.
@@ -10,7 +14,8 @@
 
 relu(3) = 3
 relu(-3) = 0
-<image>
+
+![relu](images/relu.png)
 
 Identity Function: Returns the same output as the input.
 
@@ -22,7 +27,7 @@ Identity Function: Returns the same output as the input.
 * For example, the first hidden layer may identify a line, the second may identify a diagonal, the third may identify a square, and subsequent layers may come up with more complex geometrical shapes based on the data.
 * An advantage is that the modeler need not specify these interactions.
 
-<image>
+![deep network](images/deeper_networks.png)
 
 # Optimizing Neural Networks
 
@@ -49,7 +54,8 @@ Identity Function: Returns the same output as the input.
 4. Repeat until the slope is somewhat flat.
 
 * This algorithm eventually leads to the minimum value. Hence, it is used to minimise the value of the loss function.
-<image>
+
+![gradient descent](images/gradient_descent.png)
 
 ### Learning Rate
 
@@ -111,6 +117,8 @@ In the end, all the weights are updated *simultaneously*.
 * Need to keep track of the slopes w.r.t the values of the nodes.
 * Slope of node values = sum of the slopes of the weights coming out from the node.
 
+![back propagation](images/back_propagation.png)
+
 ## Stochastic Gradient Descent
 
 * Calculates slopes only on a subset of data.
@@ -142,8 +150,9 @@ You can add layers to the network using the add() method.
     model.add(Dense(1))
 
 Here, Dense means that every node in the previous layer is connected to every node in the next layer.
+
 100 is the number of nodes in the layer.
-activation specifies the activation function to be used.
+'activation' specifies the activation function to be used.
 The first line specifies the input layer. The next line specifies a hidden layer.
 The last line specifies the output layer with a single node.
 
@@ -158,14 +167,14 @@ The compile method in Keras has two different arguments:
 2. Loss Function
 * The most commonly used function is the mean_squared_error
 
-    model.compile(optimizer='adam', loss='mean_squared_error')
+        model.compile(optimizer='adam', loss='mean_squared_error')
 
 ## Fitting the model
 
 * The fit step applies backpropagation and gradient descent with your data to update the weights.
 * Scaling the data before fitting can ease the optimization process.
 
-    model.fit(predictors, target)
+        model.fit(predictors, target)
 
 ## Classification models
 
@@ -181,10 +190,10 @@ For classification models,
 * This model can then be reloaded for use.
 * Using the reloaded model, you can make predictions.
 
-    from keras.models import load_model
-    model.save('my_model.h5')
-    mymodel = load_model('my_model.hf)
-    pred = mymodel.predict(data)
+        from keras.models import load_model
+        model.save('my_model.h5')
+        mymodel = load_model('my_model.hf)
+        pred = mymodel.predict(data)
 
 This can be useful in avoiding rebuilding a model or verifying the structure of the model before making predictions.
 
@@ -210,12 +219,12 @@ For example, if you are using Stochastic Gradient Descent,
 
 ### Dying Neuron Problem
 
-This problem occurs when a neuron outputs a value of 0 for all the rows in the data. 
-In case of a relu activation function, this would mean, the weight coming into that node is negative.
-Hence, the slop of the weights as well as the output is 0. This means, the weights do not get updated.
-Such a neuron has nothing to add to the model and is hence called *dead*.
+* This problem occurs when a neuron outputs a value of 0 for all the rows in the data. 
+* In case of a relu activation function, this would mean, the weight coming into that node is negative.
+* Hence, the slop of the weights as well as the output is 0. This means, the weights do not get updated.
+* Such a neuron has nothing to add to the model and is hence called *dead*.
 
-<image>
+![dying neuron](images/dying_neuron.png)
 
 At first, we may feel that an activation function which never outputs an exact zero could be a solution.
 However, this may result in another problem called Vanishing gradients.
@@ -223,7 +232,8 @@ However, this may result in another problem called Vanishing gradients.
 ### Vanishing Gradients
 
 Earlier, a popular activation function was used called the *tanh* function.
-<image>
+
+![vanishing gradient](images/vanishing_gradient.png)
 
 * This problem occurs when many layers have very small slopes due to being on the flat part of the tanh curve.
 * Small slopes may work in networks with very few layers, however, with deep networks, the slopes become close to 0. This implies that in backpropagation, the updates are close to 0.
@@ -236,15 +246,15 @@ For the vanishing gradient problem, the first thought would be to use an activat
 * Validation data is the data that is held out explicitly from the training data and is used only to test the model performance. A common technique is k-fold cross validation. In practice, k-fold cross validation on deep learning is very computationally expensive.
 * Keras makes it easy to use some data as validation data by specifying a parameter in the fit() method.
 
-    model.fit(predictors, target, validation_split=0.3)
+        model.fit(predictors, target, validation_split=0.3)
 
 The above statement specifies that 30% of the data should be used as validation data.
 
 * The idea is to have a best possible validation of the model. Hence, we keep training as long as the model is improving. We stop once the validation no longer gives better results. This can be achieved with the help of **Early Stopping**.
 
-    from keras.callbacks import EarlyStopping
-    early_stopping_monitor=EarlyStopping(patience=2)
-    model.fit(predictors, target, validation_split=0.3, nb_epoch=20, callbacks=[early_stopping_monitor])
+        from keras.callbacks import EarlyStopping
+        early_stopping_monitor=EarlyStopping(patience=2)
+        model.fit(predictors, target, validation_split=0.3, nb_epoch=20, callbacks=[early_stopping_monitor])
 
 The parameter *patience* specifies how many epochs the model can go without training before we stop training any further.
 
@@ -258,7 +268,7 @@ By default, keras trains for 10 epochs. Since we have specified when to stop, we
 * Model capacity is a model's ability to capture predictive patterns in the data.
 * Capacity can be in terms of layers, number of nodes in the layers, etc.
 
-<image>
+![model capacity](images/mode_capacity.png)
 
 ### Workflow for optimizing model capacity
 
@@ -267,7 +277,8 @@ By default, keras trains for 10 epochs. Since we have specified when to stop, we
 * Keep increasing capacity till the validation score is no longer improving.
 
 Example:
-<Image>
+![workflow](images/capacity_optimizing_workflow.png)
+
 
 # Links
 
